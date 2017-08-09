@@ -39,11 +39,11 @@ defmodule Hexadecimal do
 
   @spec to_decimal(binary) :: integer
   def to_decimal(hex, radix \\ 16) do
+    hex_length = String.length(hex)
     try do
       String.split(hex, "", trim: true)
-        |> Enum.reverse
         |> Enum.with_index
-        |> Enum.reduce(0, fn({value, index}, acc) -> acc + convert_value(radix, value, index) end)
+        |> Enum.reduce(0, fn({value, index}, acc) -> acc + convert_value(radix, value, hex_length - index - 1) end)
     rescue
       e in RuntimeError -> 0
     end
